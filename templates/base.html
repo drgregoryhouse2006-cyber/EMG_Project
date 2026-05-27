@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bitácora sEMG - Bioingeniería</title>
+
+    <!-- ========================= -->
+    <!--        MATHJAX            -->
+    <!-- ========================= -->
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: false
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+    </script>
+
+    <script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+
+    <!-- ========================= -->
+    <!--          CSS              -->
+    <!-- ========================= -->
+    <style>
+
+        /* ========================= */
+        /*         RESET             */
+        /* ========================= */
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.75;
+
+            color: #1a1a1a;
+            background-color: #f4f7f6;
+
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        /* ========================= */
+        /*    CONTENEDOR PRINCIPAL   */
+        /* ========================= */
+
+        .report-container {
+
+            width: 100%;
+            max-width: 1000px;
+
+            margin: auto;
+
+            background: white;
+
+            padding: 60px;
+
+            border-radius: 6px;
+
+            box-shadow:
+                0 4px 20px rgba(0,0,0,0.08),
+                0 2px 6px rgba(0,0,0,0.05);
+
+            overflow-x: hidden;
+            overflow-y: visible;
+        }
+
+        /* ========================= */
+        /*         HEADER            */
+        /* ========================= */
+
+        header {
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            text-align: center;
+
+            color: #2c3e50;
+
+            border-bottom: 3px double #2c3e50;
+
+            padding-bottom: 15px;
+
+            text-transform: uppercase;
+
+            font-size: 2.1rem;
+
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #2980b9;
+
+            border-left: 6px solid #2980b9;
+
+            padding-left: 15px;
+
+            margin-top: 50px;
+
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            color: #34495e;
+            margin-top: 35px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 18px;
+        }
+
+        /* ========================= */
+        /*         METADATA          */
+        /* ========================= */
+
+        .metadata {
+
+            background: #fcfcfc;
+
+            border: 1px solid #e8e8e8;
+
+            padding: 25px;
+
+            margin-bottom: 40px;
+
+            border-radius: 5px;
+
+            font-size: 0.97em;
+        }
+
+        .authors-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+
+            margin-top: 15px;
+        }
+
+        /* ========================= */
+        /*        BOTÓN              */
+        /* ========================= */
+
+        .btn-diagrama {
+
+            background: #2980b9;
+
+            color: white;
+
+            padding: 12px 22px;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+
+            display: inline-block;
+
+            transition:
+                background 0.3s ease,
+                transform 0.2s ease;
+        }
+
+        .btn-diagrama:hover {
+
+            background: #1d5f87;
+
+            transform: translateY(-2px);
+        }
+
+        /* ========================= */
+        /*         IMÁGENES          */
+        /* ========================= */
+
+        .report-container img {
+
+            display: block;
+
+            max-width: 100%;
+
+            width: auto;
+
+            height: auto;
+
+            max-height: 750px;
+
+            margin: 35px auto;
+
+            border-radius: 6px;
+
+            box-shadow:
+                0 3px 14px rgba(0,0,0,0.18);
+
+            object-fit: contain;
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        /* Hover elegante */
+
+        .report-container img:hover {
+
+            transform: scale(1.01);
+
+            box-shadow:
+                0 8px 24px rgba(0,0,0,0.22);
+        }
+
+        /* ========================= */
+        /*      FIGURAS/CAPTIONS     */
+        /* ========================= */
+
+        figure {
+
+            margin: 40px auto;
+
+            text-align: center;
+        }
+
+        figcaption {
+
+            font-size: 0.92rem;
+
+            color: #555;
+
+            margin-top: 10px;
+
+            font-style: italic;
+
+            line-height: 1.5;
+
+            max-width: 90%;
+
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========================= */
+        /*          TABLAS           */
+        /* ========================= */
+
+        table {
+
+            border-collapse: collapse;
+
+            width: 100%;
+
+            margin: 30px 0;
+
+            overflow-x: auto;
+        }
+
+        th,
+        td {
+
+            border: 1px solid #bdc3c7;
+
+            padding: 12px;
+
+            text-align: left;
+
+            vertical-align: top;
+        }
+
+        th {
+
+            background-color: #f7f9fa;
+
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* ========================= */
+        /*       PAGE BREAK          */
+        /* ========================= */
+
+        .page-break {
+
+            border: 0;
+
+            border-top: 2px dashed #d8d8d8;
+
+            margin: 70px 0;
+        }
+
+        /* ========================= */
+        /*       BLOQUES CÓDIGO      */
+        /* ========================= */
+
+        pre {
+
+            background: #f7f7f7;
+
+            padding: 18px;
+
+            overflow-x: auto;
+
+            border-radius: 5px;
+
+            border: 1px solid #e1e1e1;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        /* ========================= */
+        /*        RESPONSIVE         */
+        /* ========================= */
+
+        @media (max-width: 768px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .report-container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .authors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .report-container img {
+                max-height: 450px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="report-container">
+
+        <!-- ========================= -->
+        <!--          HEADER           -->
+        <!-- ========================= -->
+
+        <header>
+
+            <h1>
+                Bitácora Técnica: Sistema de Adquisición EMG
+            </h1>
+
+            <div class="metadata">
+
+                <p>
+                    <strong>Universidad del Magdalena</strong>
+                    - Facultad de Ingeniería
+                </p>
+
+                <p>
+                    <strong>Equipo de Investigación:</strong>
+                </p>
+
+                <div class="authors-grid">
+
+                    <span>
+                        Samuel Heli Rojas Sandoval (2023119081)
+                    </span>
+
+                    <span>
+                        Miguel Ángel León Romero (2024119102)
+                    </span>
+
+                    <span>
+                        Sebastián Andrés Barros (2022219038)
+                    </span>
+
+                    <span>
+                        Fabio José Quintero (2022219057)
+                    </span>
+
+                </div>
+
+                <p style="margin-top:20px;">
+                    <strong>Músculo Objetivo:</strong>
+                    Gastrocnemio
+                </p>
+
+                <div style="text-align:center; margin-top:25px;">
+
+                    <a href="/diagrama" class="btn-diagrama">
+                        Ver Diagrama de Bloques Animado →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- ========================= -->
+        <!--      CONTENIDO DINÁMICO   -->
+        <!-- ========================= -->
+
+        <main id="main-content">
+
+            {{ content|safe }}
+
+        </main>
+
+    </div>
+
+</body>
+</html>
